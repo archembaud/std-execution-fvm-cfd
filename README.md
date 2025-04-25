@@ -16,3 +16,27 @@ All codes are built using:
 make
 ```
 
+You can check the code is operating correctly on your system using the simple demonstration provided:
+
+```bash
+./Simple_Vector_Demo/test.exe
+```
+
+which should return:
+
+```bash
+Number of available threads: 28
+Value of result[0] is 2
+Value of result[1] is 4
+Value of result[2] is 6
+Value of result[3] is 8
+Value of result[4] is 10
+Value of result[0] is 2
+Value of result[1] is 8
+Value of result[2] is 18
+Value of result[3] is 32
+Value of result[4] is 50
+```
+
+**NOTE** The number of available threads will depend on your own system.
+
