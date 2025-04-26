@@ -14,6 +14,8 @@
 #define DT (CFL*DX/2.0)
 #define DT_ON_DX (0.5*CFL)
 
+// Wrapping Functions called from the main loop
+
 void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2,
                                  std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2,
                                  std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
@@ -38,7 +40,6 @@ void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, s
 void ComputeConservedChangeFromFluxes(std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
                                       std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2, 
                                       std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2) {
-
     /*
     Compute the change in conserved quantites based on the fluxes.
     */
@@ -51,6 +52,25 @@ void ComputeConservedChangeFromFluxes(std::vector<float>&Fp0, std::vector<float>
         }
     );
 }
+
+
+void UpdateConservedQuantitiesFromdU(std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2,
+                               std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2,
+                               std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2) {
+    /*
+    Update the value of u based on dU, then update P values as well while we are there.
+    */
+    std::for_each(
+        std::execution::par_unseq,
+        du0.begin(),
+        du0.end(),
+        [&du0, &du1, &du2, &u0, &u1, &u2, &p0, &p1, &p2](float& elem) {
+            UpdateConservedQuantities(elem, du0, du1, du2, u0, u1, u2, p0, p1, p2);
+        }
+    );
+}
+
+
 
 void ComputeConservedFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2, 
                                     std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2) { 
@@ -84,6 +104,7 @@ void ComputeConservedFromPrimitives(std::vector<float>&p0, std::vector<float>&p1
     );
 }
 
+// Kernel functoins called from within wrapping functions
 
 float ComputeMassFromP(float density) {
     // For density, this is trivial => p = u
@@ -157,15 +178,20 @@ void ComputeDeltaUFromP(float& elem,
 }
 
 
+void UpdateConservedQuantities(float& elem, const std::vector<float>& dmass, const std::vector<float>& dmom, const std::vector<float>& deng,
+                               std::vector<float>& mass, std::vector<float>& mom, std::vector<float>& eng, 
+                               std::vector<float>& density, std::vector<float>& xvel, std::vector<float>& temp) {
 
-
-
-
-
-
-
-
-
+    size_t index = &elem - &dmass[0];
+    // Update conserved quantities
+    mass[index] = mass[index] + dmass[index];
+    mom[index] = mom[index] + dmom[index];
+    eng[index] = eng[index] + deng[index];
+    // Update primitives
+    density[index] = mass[index];
+    xvel[index] = mom[index]/density[index];
+    temp[index] = ((eng[index]/density[index]) - xvel[index]*xvel[index])/CV;
+}
 
 
 void ComputeFluxesFromP(float& elem, const std::vector<float>& density, const std::vector<float>& xvel, const std::vector<float>& temp,

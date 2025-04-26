@@ -1,6 +1,7 @@
 #include <execution>
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include "FVM.h"
 
 #define N 200
@@ -10,7 +11,7 @@
 #define CFL 0.25
 // CFL = 2.0*DT/DX
 #define DT (CFL*DX/2.0)
-#define NO_STEPS 100
+#define NO_STEPS 200
 
 void Init(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2) {
     for (int i = 0; i < N; i++) {
@@ -24,6 +25,15 @@ void Init(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2) {
             p2[i] = 1.0;    
         }
     }
+}
+
+void Save_Results(const std::vector<float>&p0, const std::vector<float>&p1, const std::vector<float>&p2)   {
+    std::ofstream ResultFile("results.txt");
+    for (int i = 0; i < N; i++) {
+        float cx = (i+0.5)*DX;
+        ResultFile << cx << "\t" << p0[i] << "\t" << p1[i] << "\t" << p2[i] << "\n";
+    }
+    ResultFile.close();
 }
 
 int main() {
@@ -56,22 +66,19 @@ int main() {
     ComputeConservedFromPrimitives(p0, p1, p2, u0, u1, u2);
 
     for (int step = 0; step < NO_STEPS; step++) {
-        std::cout << "Timestep " << step << " of " << NO_STEPS << "\n";
+        // std::cout << "Timestep " << step << " of " << NO_STEPS << "\n";
         ComputeFluxesFromPrimitives(p0, p1, p2, u0, u1, u2,
                                     Fp0, Fp1,Fp2, Fm0, Fm1, Fm2);
 
         ComputeConservedChangeFromFluxes(Fp0, Fp1, Fp2, Fm0, Fm1, Fm2,
                                     du0, du1, du2);
+        
+        UpdateConservedQuantitiesFromdU(du0, du1, du2, u0, u1, u2, p0, p1, p2);
+
     }
 
-
-    // Print a few of the first elements
-    for (int i = 98; i < 104; i++) {
-        std::cout << "---------------------------------------\n";
-        std::cout << "du[" << i << "]=" << du0[i] << ", " << du1[i] << ", " << du2[i] << "\n"; 
-        std::cout << "FP[" << i << "]=" << Fp0[i] << ", " << Fp1[i] << ", " << Fp2[i] << "\n"; 
-        std::cout << "FM[" << i << "]=" << Fm0[i] << ", " << Fm1[i] << ", " << Fm2[i] << "\n"; 
-    }
+    // Save the results
+    Save_Results(p0, p1, p2);
 
     return 0;
 }

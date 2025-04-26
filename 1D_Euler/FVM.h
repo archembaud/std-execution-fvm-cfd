@@ -18,10 +18,13 @@ void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, s
                                 std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
                                 std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2);
 
-
 void ComputeConservedChangeFromFluxes(std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
                                 std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2,
                                 std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2);
+
+void UpdateConservedQuantitiesFromdU(std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2,
+                                std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2,
+                                std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2);
 
 
 // Kernel functoins called from within wrapping functions
@@ -39,3 +42,7 @@ void ComputeDeltaUFromP(float& elem,
                         const std::vector<float>& PmassFlux, const std::vector<float>& PmomFlux, const std::vector<float>& PengFlux,
                         const std::vector<float>& MmassFlux, const std::vector<float>& MmomFlux, const std::vector<float>& MengFlux,
                         std::vector<float>& dmass, std::vector<float>& dmom, std::vector<float>& deng);
+
+void UpdateConservedQuantities(float& elem, const std::vector<float>& dmass, const std::vector<float>& dmom, const std::vector<float>& deng,
+                                std::vector<float>& mass, std::vector<float>& mom, std::vector<float>& eng, 
+                                std::vector<float>& density, std::vector<float>& xvel, std::vector<float>& temp);
