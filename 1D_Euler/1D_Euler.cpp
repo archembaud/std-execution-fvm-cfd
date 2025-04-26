@@ -38,6 +38,9 @@ int main() {
     std::vector<float> u0(problemSize);
     std::vector<float> u1(problemSize);
     std::vector<float> u2(problemSize);
+    std::vector<float> du0(problemSize);
+    std::vector<float> du1(problemSize);
+    std::vector<float> du2(problemSize);
     // Fluxes
     std::vector<float> Fp0(problemSize);
     std::vector<float> Fp1(problemSize);
@@ -56,12 +59,16 @@ int main() {
         std::cout << "Timestep " << step << " of " << NO_STEPS << "\n";
         ComputeFluxesFromPrimitives(p0, p1, p2, u0, u1, u2,
                                     Fp0, Fp1,Fp2, Fm0, Fm1, Fm2);
+
+        ComputeConservedChangeFromFluxes(Fp0, Fp1, Fp2, Fm0, Fm1, Fm2,
+                                    du0, du1, du2);
     }
 
 
     // Print a few of the first elements
-    for (int i = 0; i < 5; i++) {
-        std::cout << "---------------------------------------";
+    for (int i = 98; i < 104; i++) {
+        std::cout << "---------------------------------------\n";
+        std::cout << "du[" << i << "]=" << du0[i] << ", " << du1[i] << ", " << du2[i] << "\n"; 
         std::cout << "FP[" << i << "]=" << Fp0[i] << ", " << Fp1[i] << ", " << Fp2[i] << "\n"; 
         std::cout << "FM[" << i << "]=" << Fm0[i] << ", " << Fm1[i] << ", " << Fm2[i] << "\n"; 
     }

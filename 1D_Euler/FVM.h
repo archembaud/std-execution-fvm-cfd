@@ -8,6 +8,8 @@ void ComputeEngFromP(float& elem, const std::vector<float>& density,
                 const std::vector<float>& temp,
                 std::vector<float>& eng);
 
+// Wrapping Functions called from the main loop
+
 void ComputeConservedFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2, 
                                     std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2);
 
@@ -17,6 +19,13 @@ void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, s
                                 std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2);
 
 
+void ComputeConservedChangeFromFluxes(std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
+                                std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2,
+                                std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2);
+
+
+// Kernel functoins called from within wrapping functions
+
 void ComputeAllUFromP(float& elem, const std::vector<float>& density, const std::vector<float>& xvel, 
                       const std::vector<float>& temp, std::vector<float>& mass, std::vector<float>& mom,
                       std::vector<float>& eng);
@@ -25,3 +34,8 @@ void ComputeFluxesFromP(float& elem, const std::vector<float>& density, const st
                         std::vector<float>& mass, std::vector<float>& mom, std::vector<float>& eng,
                         std::vector<float>& PmassFlux, std::vector<float>& PmomFlux, std::vector<float>& PengFlux,
                         std::vector<float>& MmassFlux, std::vector<float>& MmomFlux, std::vector<float>& MengFlux);
+
+void ComputeDeltaUFromP(float& elem,
+                        const std::vector<float>& PmassFlux, const std::vector<float>& PmomFlux, const std::vector<float>& PengFlux,
+                        const std::vector<float>& MmassFlux, const std::vector<float>& MmomFlux, const std::vector<float>& MengFlux,
+                        std::vector<float>& dmass, std::vector<float>& dmom, std::vector<float>& deng);

@@ -6,6 +6,13 @@
 #define R 1.0
 #define GAMMA 1.4
 #define CV (R/(GAMMA-1.0))
+#define N 200
+#define L 1.0
+#define DX (L/N)
+#define CFL 0.25
+// CFL = 2.0*DT/DX
+#define DT (CFL*DX/2.0)
+#define DT_ON_DX (0.5*CFL)
 
 void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2,
                                  std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2,
@@ -22,6 +29,25 @@ void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, s
         p0.end(),
         [&p0, &p1, &p2, &u0, &u1, &u2, &Fp0, &Fp1, &Fp2, &Fm0, &Fm1, &Fm2](float& elem) {
             ComputeFluxesFromP(elem, p0, p1, p2,  u0, u1, u2, Fp0, Fp1, Fp2, Fm0, Fm1, Fm2);
+        }
+    );
+}
+
+
+
+void ComputeConservedChangeFromFluxes(std::vector<float>&Fp0, std::vector<float>&Fp1, std::vector<float>&Fp2,
+                                      std::vector<float>&Fm0, std::vector<float>&Fm1, std::vector<float>&Fm2, 
+                                      std::vector<float>&du0, std::vector<float>&du1, std::vector<float>&du2) {
+
+    /*
+    Compute the change in conserved quantites based on the fluxes.
+    */
+    std::for_each(
+        std::execution::par_unseq,
+        Fp0.begin(),
+        Fp0.end(),
+        [&Fp0, &Fp1, &Fp2, &Fm0, &Fm1, &Fm2, &du0, &du1, &du2](float& elem) {
+            ComputeDeltaUFromP(elem, Fp0, Fp1, Fp2, Fm0, Fm1, Fm2, du0, du1, du2);
         }
     );
 }
@@ -82,6 +108,65 @@ void ComputeAllUFromP(float& elem, const std::vector<float>& density, const std:
     mom[index] = density[index]*xvel[index];
     eng[index] = density[index] * (CV*temp[index] + 0.5f * xvel[index] * xvel[index]);
 }
+
+
+void ComputeDeltaUFromP(float& elem,
+                        const std::vector<float>& PmassFlux, const std::vector<float>& PmomFlux, const std::vector<float>& PengFlux,
+                        const std::vector<float>& MmassFlux, const std::vector<float>& MmomFlux, const std::vector<float>& MengFlux,
+                        std::vector<float>& dmass, std::vector<float>& dmom, std::vector<float>& deng) {
+    size_t index = &elem - &PmassFlux[0];    
+    // Compute the change in mass by computing net fluxes
+    // Compute the left net fluxes first
+    float NetFluxLeft[3];
+    float NetFluxRight[3];
+
+    if (index == 0) {
+        // First cell, treat left hand boundary as outflow
+        NetFluxLeft[0] = PmassFlux[index] + MmassFlux[index];
+        NetFluxLeft[1] = PmomFlux[index] + MmomFlux[index];
+        NetFluxLeft[2] = PengFlux[index] + MengFlux[index];
+        // Right Flux
+        NetFluxRight[0] = MmassFlux[index+1] + PmassFlux[index];
+        NetFluxRight[1] = MmomFlux[index+1] + PmomFlux[index];
+        NetFluxRight[2] = MengFlux[index+1] + PengFlux[index];
+    } else if (index == (N-1)) {
+        // Last cell
+        NetFluxLeft[0] = PmassFlux[index-1] + MmassFlux[index];
+        NetFluxLeft[1] = PmomFlux[index-1] + MmomFlux[index];
+        NetFluxLeft[2] = PengFlux[index-1] + MengFlux[index];
+        // Right Flux
+        NetFluxRight[0] = MmassFlux[index] + PmassFlux[index];
+        NetFluxRight[1] = MmomFlux[index] + PmomFlux[index];
+        NetFluxRight[2] = MengFlux[index] + PengFlux[index];
+    } else {
+        // Interior Cell
+        // Left
+        NetFluxLeft[0] = PmassFlux[index-1] + MmassFlux[index];
+        NetFluxLeft[1] = PmomFlux[index-1] + MmomFlux[index];
+        NetFluxLeft[2] = PengFlux[index-1] + MengFlux[index];
+        // Right Flux
+        NetFluxRight[0] = MmassFlux[index+1] + PmassFlux[index];
+        NetFluxRight[1] = MmomFlux[index+1] + PmomFlux[index];
+        NetFluxRight[2] = MengFlux[index+1] + PengFlux[index];
+    }
+
+    // Compute dU
+    dmass[index] = -DT_ON_DX*(NetFluxRight[0] - NetFluxLeft[0]);
+    dmom[index] = -DT_ON_DX*(NetFluxRight[1] - NetFluxLeft[1]);
+    deng[index] = -DT_ON_DX*(NetFluxRight[2] - NetFluxLeft[2]);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 void ComputeFluxesFromP(float& elem, const std::vector<float>& density, const std::vector<float>& xvel, const std::vector<float>& temp,
                         std::vector<float>& mass, std::vector<float>& mom, std::vector<float>& eng,
