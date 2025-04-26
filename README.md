@@ -67,3 +67,16 @@ Table 1: Time required using 1st order with maximum optimization and g++ (13.3.0
 | 65536         | 104858        |   17.483          |     16.918      |
 
 Table 2: Time required using 1st order with maximum optimization and clang++ (18.1.3) with std::execution code with the maximum number of threads (28 on i7-14700HX)
+
+### First order, maximum optimization, g++, OpenMP Code (Short-lived Threads)
+
+| Number of Cells | Number of Time Steps | Timing (Run A), s | Timing (Run B), s |
+|----------------| ---------------| ----------------| ---------------| 
+| 2048          | 3277           |   0.073         |  0.086      |
+| 4096          | 6554           |   0.169         |   0.169     |
+| 8192          | 13108           |  0.369           |   0.372      |
+| 16384         | 26215         |  0.955           |   1.020       |
+| 32768         | 52429         |  6.937           |   6.879     |
+| 65536         | 104858        |  28.161           |  27.609     |
+
+Table 3: Time required using 1st order with maximum optimization and g++ (13.3.0) with Openmp code with the maximum number of threads (28 on i7-14700HX). The OpenMP implementation uses short-lived threads (as opposed to persistent threads). Performance seems comparible to that of persistent OpenMP threads.
