@@ -4,15 +4,6 @@
 #include <fstream>
 #include "FVM.h"
 
-#define N 200
-#define CV (1/0.4)
-#define L 1.0
-#define DX (L/N)
-#define CFL 0.25
-// CFL = 2.0*DT/DX
-#define DT (CFL*DX/2.0)
-#define NO_STEPS 200
-
 void Init(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2) {
     for (int i = 0; i < N; i++) {
         if (i < 0.5*N) {
@@ -58,15 +49,15 @@ int main() {
     std::vector<float> Fm0(problemSize);
     std::vector<float> Fm1(problemSize);
     std::vector<float> Fm2(problemSize);
-
+    float time = 0.0;
+    int step = 0;
     // Call Init
     Init(p0, p1, p2);
 
     // Compute Conserved Quantities from Primitives
     ComputeConservedFromPrimitives(p0, p1, p2, u0, u1, u2);
 
-    for (int step = 0; step < NO_STEPS; step++) {
-        // std::cout << "Timestep " << step << " of " << NO_STEPS << "\n";
+    while (time < TOTAL_TIME) {
         ComputeFluxesFromPrimitives(p0, p1, p2, u0, u1, u2,
                                     Fp0, Fp1,Fp2, Fm0, Fm1, Fm2);
 
@@ -75,10 +66,14 @@ int main() {
         
         UpdateConservedQuantitiesFromdU(du0, du1, du2, u0, u1, u2, p0, p1, p2);
 
+        // Update time
+        time+=DT;
+        step++;
     }
 
     // Save the results
-    Save_Results(p0, p1, p2);
+    // Save_Results(p0, p1, p2);
 
+    std::cout << "Simulation completed after " << step << " steps with " << N << " cells\n";
     return 0;
 }

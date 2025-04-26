@@ -1,3 +1,14 @@
+#define N 65536
+#define R 1.0
+#define GAMMA 1.4
+#define CV (R/(GAMMA-1.0))
+#define L 1.0
+#define DX (L/N)
+#define CFL 0.25
+// CFL = 2.0*DT/DX
+#define DT (CFL*DX/2.0)
+#define DT_ON_DX (0.5*CFL)
+#define TOTAL_TIME 0.2
 
 float ComputeMassFromP(float density);
 

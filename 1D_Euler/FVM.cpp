@@ -3,17 +3,6 @@
 #include <cmath>
 #include "FVM.h"
 
-#define R 1.0
-#define GAMMA 1.4
-#define CV (R/(GAMMA-1.0))
-#define N 200
-#define L 1.0
-#define DX (L/N)
-#define CFL 0.25
-// CFL = 2.0*DT/DX
-#define DT (CFL*DX/2.0)
-#define DT_ON_DX (0.5*CFL)
-
 // Wrapping Functions called from the main loop
 
 void ComputeFluxesFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2,
