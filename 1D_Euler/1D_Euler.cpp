@@ -72,7 +72,7 @@ int main() {
     }
 
     // Save the results
-    // Save_Results(p0, p1, p2);
+    Save_Results(p0, p1, p2);
 
     std::cout << "Simulation completed after " << step << " steps with " << N << " cells\n";
     return 0;

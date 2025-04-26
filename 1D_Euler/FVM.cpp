@@ -179,7 +179,7 @@ void UpdateConservedQuantities(float& elem, const std::vector<float>& dmass, con
     // Update primitives
     density[index] = mass[index];
     xvel[index] = mom[index]/density[index];
-    temp[index] = ((eng[index]/density[index]) - xvel[index]*xvel[index])/CV;
+    temp[index] = ((eng[index]/density[index]) - 0.5*xvel[index]*xvel[index])/CV;
 }
 
 

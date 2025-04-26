@@ -1,4 +1,4 @@
-#define N 2048
+#define N 256
 #define R 1.0
 #define GAMMA 1.4
 #define CV (R/(GAMMA-1.0))
