@@ -1,4 +1,4 @@
-COMPILER=clang++
+COMPILER=g++
 OPTIONS=-O3 -ltbb 
 1deuler:
 	${COMPILER} FVM.cpp ${OPTIONS} -c
