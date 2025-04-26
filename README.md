@@ -40,3 +40,21 @@ Value of result[4] is 50
 
 **NOTE** The number of available threads will depend on your own system.
 
+## Performance
+
+### First order, maximum optimization, g++
+
+| Number of Cells | Number of Time Steps | Timing (Run A), s | Timing (Run B), s |
+|----------------| ---------------| ----------------| ---------------| 
+| 256           | 410           | 0.030             | 0.022         |
+| 512           | 820           | 0.041             | 0.035         |
+| 1024          | 1639           | 0.058             | 0.064        |
+| 2048          | 3277           | 0.114             | 0.119        |
+| 4096          | 6554           | 0.269             | 0.242        |
+| 8192          | 13108           | 0.597            | 0.561        |
+| 16384         | 26215         |  1.619            |  1.523        |
+| 32768         | 52429         |  5.377           |   5.357      |
+| 65536         | 104858        |  17.131           |  17.044      |
+
+Table 1: Time required using 1st order with maximum optimization and g++ (13.3.0) with std::execution code with the maximum number of threads (28 on i7-14700HX)
+
