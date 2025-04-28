@@ -74,9 +74,7 @@ int main() {
     // Compute Conserved Quantities from Primitives
     ComputeConservedFromPrimitives(p0, p1, p2, p3, u0, u1, u2, u3);
 
-    for (int step = 0; step < 200; step++) {
-    //while (time < TOTAL_TIME) {
-        printf("Taking time step %d\n", step);
+    while (time < TOTAL_TIME) {
         // X direction
         ComputeFluxesFromPrimitives(0, p0, p1, p2, p3, u0, u1, u2, u3,
                                     Fp0, Fp1, Fp2, Fp3, Fm0, Fm1, Fm2, Fm3);
@@ -93,11 +91,11 @@ int main() {
 
         // Update time
         time+=DT;
-        //step++;
+        step++;
     }
 
     // Save the results
-    Save_Results(p0, p1, p2, p3);
+    // Save_Results(p0, p1, p2, p3);
 
     std::cout << "Simulation completed after " << step << " steps with " << N << " cells\n";
     return 0;
