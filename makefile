@@ -1,7 +1,7 @@
 COMPILER=g++
 OPTIONS=-O3 -ltbb
 
-all: simple 1deuler omp
+all: simple 1deuler 2deuler omp
 	${info Compile Complete}
 
 simple:
@@ -10,6 +10,11 @@ simple:
 1deuler:
 	${info Compiling 1D Euler Solver}
 	$(MAKE) -C 1D_Euler $@
+	${info Done}
+
+2deuler:
+	${info Compiling 2D Euler Solver}
+	$(MAKE) -C 2D_Euler $@
 	${info Done}
 
 omp:

@@ -204,6 +204,10 @@ int main() {
     // Use persistent OpenMP threads instead of short-lived threads
     #pragma omp parallel
     {
+        #pragma omp single
+        {
+            printf("Using %d threads\n", omp_get_num_threads());
+        }
 
         float time = 0.0;
         int NO_STEPS = 0;
