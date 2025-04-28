@@ -91,7 +91,7 @@ Table 3: Time required using 1st order with maximum optimization and g++ (13.3.0
 | 256 x 256      | 410           | 0.193             | 0.193        |
 | 512 x 512      | 820           | 1.165             | 1.139        |
 | 1024 x 1024    | 1639          | 11.734            |  10.900       |
-| 2056 x 2056    |  3277       |  98.408          | 98.317         |
+| 2048 x 2048    |  3277       |  98.408          | 98.317         |
 
 Table 4: Time required using 1st order with maximum optimization and g++ (13.3.0) with std::execution code with the maximum number of threads (28 on i7-14700HX)
 
@@ -102,6 +102,36 @@ Table 4: Time required using 1st order with maximum optimization and g++ (13.3.0
 | 256 x 256      | 410         |  0.195            | 0.214      |
 | 512 x 512      | 820         |  1.147            | 1.285      |
 | 1024 x 1024    | 1639        |  11.766           | 11.417     |
-| 2056 x 2056    |  3277       |  107.185          | 97.778     |
+| 2048 x 2048    |  3277       |  107.185          | 97.778     |
 
-Table 4: Time required using 1st order with maximum optimization and clang++ (18.1.3) with std::execution code with the maximum number of threads (28 on i7-14700HX)
+Table 5: Time required using 1st order with maximum optimization and clang++ (18.1.3) with std::execution code with the maximum number of threads (28 on i7-14700HX)
+
+### First order, maximum optimization, g++, OpenMP
+
+| Number of Cells | Number of Time Steps | Timing (Run A), s | Timing (Run B), s |
+|----------------| ---------------| ----------------| ---------------| 
+| 256 x 256      | 410           |  0.191        |   0.192         |
+| 512 x 512      | 820           |  1.696          |  1.700        |
+| 1024 x 1024    | 1639          |  13.764        |   13.806    |
+| 2048 x 2048    |  3277       |   123.022         |   122.781        |
+
+Table 6: Time required using 1st order with maximum optimization and g++ (13.3.0) with OpenMP code with the optimal number of threads (4 threads on i7-14700HX)
+
+
+| Number of Cells | Number of Time Steps | Timing (Run A), s | Timing (Run B), s |
+|----------------| ---------------| ----------------| ---------------| 
+| 256 x 256      | 410           |     0.343        |  0.296       |
+| 512 x 512      | 820           |    2.114          |  2.180      |
+| 1024 x 1024    | 1639          |    22.227         |  21.024       |
+| 2048 x 2048    |  3277       |   163.662        |   167.431       |
+
+Table 7: Time required using 1st order with maximum optimization and g++ (13.3.0) with OpenMP code with the maximum number of threads (28 on i7-14700HX)
+
+| Number of Threads | Timing (Run A), s | Timing (Run B), s |
+|----------------| ----------------| ---------------| 
+| 1      |    387.284         |    380.305     |
+| 2      |    205.496         |   208.615      |
+| 4      |    123.022         |   122.781      |
+| 8      |    132.168         |   133.610     |
+
+Table 8: Time required using 1st order with maximum optimization and g++ (13.3.0) with OpenMP code with varying numbers of threads (on i7-14700HX) using 2048 x 2048 cells with 3277 steps.
