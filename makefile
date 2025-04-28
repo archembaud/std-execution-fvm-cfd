@@ -1,7 +1,7 @@
 COMPILER=g++
 OPTIONS=-O3 -ltbb
 
-all: simple 1deuler 2deuler omp
+all: simple 1deuler 2deuler 2domp omp
 	${info Compile Complete}
 
 simple:
@@ -20,4 +20,9 @@ simple:
 omp:
 	${info Compiling 1D Euler Solver (OpenMP)}
 	$(MAKE) -C 1D_OpenMP $@
+	${info Done}
+
+2domp:
+	${info Compiling 2D Euler Solver (OpenMP)}
+	$(MAKE) -C 2D_OpenMP $@
 	${info Done}
