@@ -1,6 +1,7 @@
 #include <execution>
 #include <vector>
 #include <iostream>
+#include <thread>
 
 // A simple function passed into std::execution::par
 int ComputeVectorMultiple(int x) {
