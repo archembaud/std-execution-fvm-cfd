@@ -135,3 +135,17 @@ Table 7: Time required using 1st order with maximum optimization and g++ (13.3.0
 | 8      |    132.168         |   133.610     |
 
 Table 8: Time required using 1st order with maximum optimization and g++ (13.3.0) with OpenMP code with varying numbers of threads (on i7-14700HX) using 2048 x 2048 cells with 3277 steps.
+
+## Troubleshooting
+
+* If your build fails with this error:
+
+```bash
+/usr/bin/ld: cannot find -ltbb: No such file or directory
+```
+
+Then you are missing libtbb-dev. Install it with:
+
+```bash
+sudo apt-get install libtbb-dev
+```
