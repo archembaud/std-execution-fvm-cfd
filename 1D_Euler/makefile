@@ -1,5 +1,6 @@
 COMPILER=g++
-OPTIONS=-O3 -ltbb 
+# Override this using: make COMPILER=icx to use the Intel Compiler
+OPTIONS=-O3 -ltbb -lstdc++ 
 1deuler:
 	${COMPILER} FVM.cpp ${OPTIONS} -c
 	${COMPILER} 1D_Euler.cpp ${OPTIONS} -c
