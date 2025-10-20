@@ -16,13 +16,25 @@ Recommended metrics
 
 ## About the CPUs being testing
 
+Intel cores have P-cores and E-cores; you can distinguish which cores are which by using the command:
+
+    lscpu --extended
+
+You'll see that:
+* The P (Performance) cores have higher maximum clock speeds, and
+* The E (Efficiency) cores 
+
+Note: this doesn't work so well from WSL2 environments.
+
 ### Intel Core i7-14700HX
 
 Total Cores: 20 (8 P-cores, or Performance-cores, 12 E-cores, or Efficient Cores)
 
+### Intel Core Ultra 9 285K
 
+Total cores: 24 (8 P-cores, and 16 E-cores)
 
-
+For the purpose of this work, we will (mostly) avoid the use of E-cores in our comparison of performance.
 
 
 ## Run on Intel(R) Core(TM) i7-14700HX
@@ -95,3 +107,30 @@ Using taskset together with manually setting the number of threads to level the 
 | 1024 x 1024     |     [4]           |     1000         | 11.272, 8.678, 8.740, 12.580 | 
 | 1448 x 1448     |     [8]           |     1000         | 31.070, 31.925, 33.183, 32.148  |
 | 1448 x 1448*    |     [16]          |     1000         | 26.554, 28.713, 25.102 |
+
+
+## Run on the Intel Core Ultra 9 285K
+
+### std::execution::par_unseq using taskset and fixed number of timesteps (weak scaling)
+
+Using 1000 time steps for all resolutions.
+
+| Number of Cells | Number of Threads* | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
+|-----------------|-------------------|------------------|-----------------------------| -------------------------|
+| 512 x 512       |      1       |  5.808, 5.823, 5.761, 5.657      |                  |             |
+| 724 x 724       |      2       |  6.393, 6.325, 6.344, 6.290         |                             |                          |
+| 1024 x 1024     |     4        |  6.996, 7.093, 7.046, 7.051| 
+| 1448 x 1448     |     8        |  11.284, 11.279, 11.259, 11.273|
+| 1448 x 1448*     |     16        | 11.474, 11.488, 11.488, 11.492 |
+
+### OpenMP using taskset and fixed number of timesteps (weak scaling)
+
+Using 1000 time steps for all resolutions.
+
+| Number of Cells | Number of Threads* | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
+|-----------------|-------------------|------------------|-----------------------------| -------------------------|
+| 512 x 512       |      1       |  5.551, 5.461, 5.538, 5.468    |                  |             |
+| 724 x 724       |      2       |  6.061, 5.931, 5.962, 6.014       |                             |                          |
+| 1024 x 1024     |     4        |  6.724, 6.691, 6.899, 6.907| 
+| 1448 x 1448     |     8        |  11.279, 10.956, 10.963, 10.929|
+| 1448 x 1448*     |     16        | 20.601, 18.617, 18.528, 18.495 |
