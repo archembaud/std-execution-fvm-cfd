@@ -1,5 +1,5 @@
-#define NX 256
-#define NY 256
+#define NX 1448
+#define NY 1448
 #define N (NX*NY)
 #define R 1.0
 #define GAMMA 1.4
@@ -14,6 +14,7 @@
 #define DT_ON_DX (0.5*CFL)
 #define DT_ON_DY (0.5*CFL)   // Assume equal; this is cheating
 #define TOTAL_TIME 0.2
+#define NUM_THREADS 16
 
 // Wrapping Functions called from the main loop
 

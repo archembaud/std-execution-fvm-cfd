@@ -1,6 +1,7 @@
 #include <execution>
 #include <vector>
 #include <cmath>
+#include <iostream>
 #include "FVM.h"
 
 // Wrapping Functions called from the main loop
@@ -75,6 +76,27 @@ void ComputeConservedFromPrimitives(std::vector<float>&p0, std::vector<float>&p1
     );
 }
 
+// Make these global (I'm lazy)
+std::atomic<int> thread_count{0};
+thread_local bool counted = false;
+
+void ComputeConservedFromPrimitivesFirstRun(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2, std::vector<float>&p3, 
+                                    std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2, std::vector<float>&u3) { 
+
+    // Try to compute the number of threads used by the machine (not simple)
+    std::for_each(
+        std::execution::par_unseq,
+        p0.begin(),
+        p0.end(),
+        [&p0, &p1, &p2, &p3, &u0, &u1, &u2, &u3](float& elem) {
+            ComputeAllUFromPFirstRun(elem, p0, p1, p2, p3, u0, u1, u2, u3);
+        }
+    );
+
+    // Print the number of threads used
+    std::cout << "Estimated threads used: " << thread_count.load() << "\n";
+}
+
 // Kernel functions called from within wrapping functions
 
 void ComputeAllUFromP(float& elem, 
@@ -86,6 +108,22 @@ void ComputeAllUFromP(float& elem,
     xmom[index] = density[index]*xvel[index];
     ymom[index] = density[index]*yvel[index];
     eng[index] = density[index] * (CV*temp[index] + 0.5f * (xvel[index] * xvel[index] + yvel[index] * yvel[index]));
+}
+
+void ComputeAllUFromPFirstRun(float& elem, 
+    const std::vector<float>& density, const std::vector<float>& xvel, const std::vector<float>& yvel, const std::vector<float>& temp, 
+    std::vector<float>& mass, std::vector<float>& xmom, std::vector<float>& ymom, std::vector<float>& eng) {
+    size_t index = &elem - &density[0];    
+    // Compute the energy based on density, velocity and temperature
+    mass[index] = density[index];
+    xmom[index] = density[index]*xvel[index];
+    ymom[index] = density[index]*yvel[index];
+    eng[index] = density[index] * (CV*temp[index] + 0.5f * (xvel[index] * xvel[index] + yvel[index] * yvel[index]));
+    // Count threads
+    if (!counted) {
+        counted = true;
+        thread_count++;
+    }
 }
 
 

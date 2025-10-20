@@ -1,5 +1,5 @@
-#define NX 256
-#define NY 256
+#define NX 1448
+#define NY 1448
 #define N (NX*NY)
 #define R 1.0
 #define GAMMA 1.4
@@ -18,6 +18,9 @@
 // Wrapping Functions called from the main loop
 
 void ComputeConservedFromPrimitives(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2, std::vector<float>&p3, 
+    std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2, std::vector<float>&u3);
+
+void ComputeConservedFromPrimitivesFirstRun(std::vector<float>&p0, std::vector<float>&p1, std::vector<float>&p2, std::vector<float>&p3, 
     std::vector<float>&u0, std::vector<float>&u1, std::vector<float>&u2, std::vector<float>&u3);
 
 void ComputeFluxesFromPrimitives(const int direction, 
@@ -39,6 +42,10 @@ void UpdateConservedQuantitiesFromdU(const int update_primitives,
 // Kernel functoins called from within wrapping functions
 
 void ComputeAllUFromP(float& elem,
+    const std::vector<float>& density, const std::vector<float>& xvel, const std::vector<float>& yvel,const std::vector<float>& temp,
+    std::vector<float>& mass, std::vector<float>& xmom, std::vector<float>& ymom, std::vector<float>& eng);
+
+void ComputeAllUFromPFirstRun(float& elem,
     const std::vector<float>& density, const std::vector<float>& xvel, const std::vector<float>& yvel,const std::vector<float>& temp,
     std::vector<float>& mass, std::vector<float>& xmom, std::vector<float>& ymom, std::vector<float>& eng);
 
