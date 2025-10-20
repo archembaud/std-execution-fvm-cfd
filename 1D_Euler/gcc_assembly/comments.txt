@@ -1,0 +1,7 @@
+Notes on fvm.text
+
+
+* No examples of mulps (multiply packed single precision), addps (add packed single precision) or any other typical vectorized operations.
+* No indication the ymm or zmm registers were used.
+
+

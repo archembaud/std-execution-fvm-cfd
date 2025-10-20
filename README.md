@@ -136,6 +136,31 @@ Table 7: Time required using 1st order with maximum optimization and g++ (13.3.0
 
 Table 8: Time required using 1st order with maximum optimization and g++ (13.3.0) with OpenMP code with varying numbers of threads (on i7-14700HX) using 2048 x 2048 cells with 3277 steps.
 
+
+### Comparison of Compilers
+
+Using std::execution with the Intel(R) Core(TM) Ultra 9 285K with 2048 x 2048 cells and 3277 time steps.
+
+| Compiler | Timing (Run A), s | Timing (Run B), s |
+|----------------| ----------------| ---------------| 
+| GNU (g++)      |    90.04         |    91.08     |
+| Clang (clang++)|    91.91        |     90.507   |
+| Intel (icx)    |    89.99        |   90.08      |
+| Nvidia (nvc++) |    132.168         |   133.610     |
+
+Table 9: Time required using 1st order with maximum optimization and g++ (13.3.0) with std::execution and various compilers.
+
+Using OpenMP with the Intel Core Ultra 9 285K 285K with 2048 x 2048 cells and 3277 time steps.
+
+| Compiler | OpenMP Threads | Timing (Run A), s | Timing (Run B), s |
+|----------------| ----------------| ---------------| 
+| GNU (g++)      |    8  | 90.6         |    89.36    |
+
+
+Table 10:
+
+
+
 ## Troubleshooting
 
 * If your build fails with this error:

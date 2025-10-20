@@ -71,7 +71,7 @@ int main() {
     int step = 0;
 
     // Set the number of threads to max
-    omp_set_num_threads(4);
+    omp_set_num_threads(8);
 
     // Call Init
     Init(p0, p1, p2, p3, du0, du1, du2, du3);

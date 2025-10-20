@@ -1,0 +1,4 @@
+Comments on clang compiled code:
+
+* Evidence of mulps and addps being used in the most basic function (ComputeConservedFromPrimitives)
+* No evidence of ymm or zmm registers being used.

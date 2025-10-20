@@ -1,0 +1,4 @@
+Notes on Intel compiled code.
+
+* Evidence of addps (add packed single precision) in xmm registers.
+* No evidence of ymm or zmm registers being used.

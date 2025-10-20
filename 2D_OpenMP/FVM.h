@@ -1,5 +1,5 @@
-#define NX 256
-#define NY 256
+#define NX 2048
+#define NY 2048
 #define N (NX*NY)
 #define R 1.0
 #define GAMMA 1.4

@@ -1,0 +1,4 @@
+Notes on nvc++ compiled compiled
+* Evidence of addps
+* No evidence of mulps
+* No evidence ymm or zmm registers are used.
