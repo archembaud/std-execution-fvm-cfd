@@ -36,6 +36,11 @@ Total cores: 24 (8 P-cores, and 16 E-cores)
 
 For the purpose of this work, we will (mostly) avoid the use of E-cores in our comparison of performance.
 
+### AMD Ryzen 9 9950X
+
+Total physical cores: 16
+
+
 
 ## Run on Intel(R) Core(TM) i7-14700HX
 
@@ -54,13 +59,15 @@ This slightly ruins the weak scaling test, as we see increased overheads due to 
 | 1024 x 1024     |    [5,6,7,5]      | 9.830, 9.812, 12.829, 10.070 | 
 | 1448 x 1448     | [16, 16, 24, 18]  | 38.293, 40.294, 40.947, 38.563 | 
 
-#### Using taskset
+#### Using taskset with constant CFL (ruins weak scaling test)
 
 Attempt to use taskset to limit the number of threads used by std::execution:
 
     taskset -c 0-0 ./count
 
 Which is confirmed as working using the thread counter demonstration.
+
+This also uses a constant CFL. Nasty.
 
 | Number of Cells | Number of Threads* | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
 |-----------------|-------------------|------------------|-----------------------------| -------------------------|
@@ -87,6 +94,8 @@ Using 1000 time steps for all resolutions.
 
 This test uses a constant CFL - meaning the number of timesteps increases with the problem size.
 This slightly ruins the weak scaling test, as we see increased overheads due to time stepping.
+
+#### Constant CFL (ruins weak scaling test)
 
 | Number of Cells | Number of Threads* | Number of time steps | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
 |-----------------|-------------------|------------------| ------------------|-----------------------------| -------------------------|
@@ -134,3 +143,30 @@ Using 1000 time steps for all resolutions.
 | 1024 x 1024     |     4        |  6.724, 6.691, 6.899, 6.907| 
 | 1448 x 1448     |     8        |  11.279, 10.956, 10.963, 10.929|
 | 1448 x 1448*     |     16        | 20.601, 18.617, 18.528, 18.495 |
+
+
+## Run on the AMD Ryzen 9 9950X
+
+### std::execution::par_unseq using taskset and fixed number of timesteps (weak scaling)
+
+Using 1000 time steps for all resolutions.
+
+| Number of Cells | Number of Threads* | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
+|-----------------|-------------------|------------------|-----------------------------| -------------------------|
+| 512 x 512       |      1       | 6.045, 6.042, 6.040, 6.029      |                  |             |
+| 724 x 724       |      2       | 6.226, 6.279, 6.249, 6.235       |         |                  |
+| 1024 x 1024     |     4        | 9.207, 9.187, 9.200, 9.090 | 
+| 1448 x 1448     |     8        | 19.515, 19.534, 19.469, 19.495 |
+| 1448 x 1448*     |     16        | 17.894, 17.865, 17.907, 17.860|
+
+### OpenMP using taskset and fixed number of timesteps (weak scaling)
+
+Using 1000 time steps for all resolutions.
+
+| Number of Cells | Number of Threads* | Average Time (s) | Throughput (cells / second) |  Time / cell / timestep  |
+|-----------------|-------------------|------------------|-----------------------------| -------------------------|
+| 512 x 512       |      1       |  5.479, 5.480, 5.481, 5.481    |                  |             |
+| 724 x 724       |      2       |  5.640, 5.666, 5.658, 5.663     |                             |                          |
+| 1024 x 1024     |     4        |  9.014s, 8.785, 8.983, 9.049| 
+| 1448 x 1448     |     8        |  19.600, 19.439, 19.410, 19.606|
+| 1448 x 1448*     |     16        | 15.484, 15.436, 15.469, 15.408 |
