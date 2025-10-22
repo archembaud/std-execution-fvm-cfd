@@ -41,7 +41,6 @@ For the purpose of this work, we will (mostly) avoid the use of E-cores in our c
 Total physical cores: 16
 
 
-
 ## Run on Intel(R) Core(TM) i7-14700HX
 
 ### std::execution::par_unseq
