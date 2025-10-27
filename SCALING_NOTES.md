@@ -41,7 +41,7 @@ For the purpose of this work, we will (mostly) avoid the use of E-cores in our c
 Total physical cores: 16
 
 
-## Run on Intel(R) Core(TM) i7-14700HX
+## Run on Intel(R) Core(TM) i7-14700HX using GNU
 
 ### std::execution::par_unseq
 
@@ -57,6 +57,8 @@ This slightly ruins the weak scaling test, as we see increased overheads due to 
 | 724 x 724       |     [3,4,5,5]     |     3.265        |                             |                          |
 | 1024 x 1024     |    [5,6,7,5]      | 9.830, 9.812, 12.829, 10.070 | 
 | 1448 x 1448     | [16, 16, 24, 18]  | 38.293, 40.294, 40.947, 38.563 | 
+
+Table A (Useles, do not use)
 
 #### Using taskset with constant CFL (ruins weak scaling test)
 
@@ -76,6 +78,8 @@ This also uses a constant CFL. Nasty.
 | 1448 x 1448     |     8        | 51.639, 57.229, 57.459, 56.095 |
 | 1448 x 1448*     |     16        | 41.805, 39.387, 39.475, 38.443 |
 
+Table B (Useless, do not use)
+
 #### Using taskset with fixed number of time steps
 
 Using 1000 time steps for all resolutions.
@@ -88,6 +92,7 @@ Using 1000 time steps for all resolutions.
 | 1448 x 1448     |     8        |  22.966, 20.706, 21.093, 24.421|
 | 1448 x 1448*     |     16        | 15.480, 18.701, 18.347, 17.638 |
 
+Table C (Limited use, as this is in WSL2)
 
 ### OpenMP
 
@@ -104,6 +109,8 @@ This slightly ruins the weak scaling test, as we see increased overheads due to 
 | 1448 x 1448     |     [8]           |     2317         |  60+33.458,  60+25.034, 60+32.965, 60+35.139 |
 | 1448 x 1448*    |     [16]           |     2317         |  60+4.451,  60+3.069, 60+3.210, 60+3.542 |
 
+Table D (Useless)
+
 #### Using taskset with OpenMP and fixed number of time steps
 
 Using taskset together with manually setting the number of threads to level the playing field.
@@ -116,6 +123,7 @@ Using taskset together with manually setting the number of threads to level the 
 | 1448 x 1448     |     [8]           |     1000         | 31.070, 31.925, 33.183, 32.148  |
 | 1448 x 1448*    |     [16]          |     1000         | 26.554, 28.713, 25.102 |
 
+Table E (Limited use, WSL)
 
 ## Run on the Intel Core Ultra 9 285K
 
@@ -131,6 +139,8 @@ Using 1000 time steps for all resolutions.
 | 1448 x 1448     |     8        |  11.284, 11.279, 11.259, 11.273|
 | 1448 x 1448*     |     16        | 11.474, 11.488, 11.488, 11.492 |
 
+Table F
+
 ### OpenMP using taskset and fixed number of timesteps (weak scaling)
 
 Using 1000 time steps for all resolutions.
@@ -143,6 +153,7 @@ Using 1000 time steps for all resolutions.
 | 1448 x 1448     |     8        |  11.279, 10.956, 10.963, 10.929|
 | 1448 x 1448*     |     16        | 20.601, 18.617, 18.528, 18.495 |
 
+Table G
 
 ## Run on the AMD Ryzen 9 9950X
 
@@ -158,6 +169,8 @@ Using 1000 time steps for all resolutions.
 | 1448 x 1448     |     8        | 19.515, 19.534, 19.469, 19.495 |
 | 1448 x 1448*     |     16        | 17.894, 17.865, 17.907, 17.860|
 
+Table H
+
 ### OpenMP using taskset and fixed number of timesteps (weak scaling)
 
 Using 1000 time steps for all resolutions.
@@ -169,3 +182,5 @@ Using 1000 time steps for all resolutions.
 | 1024 x 1024     |     4        |  9.014s, 8.785, 8.983, 9.049| 
 | 1448 x 1448     |     8        |  19.600, 19.439, 19.410, 19.606|
 | 1448 x 1448*     |     16        | 15.484, 15.436, 15.469, 15.408 |
+
+Table I
