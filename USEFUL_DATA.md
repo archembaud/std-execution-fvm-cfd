@@ -29,8 +29,8 @@ Contains a summary of the data we want to discuss and present.
     * STD::VEC: STRONG_SCALING.md, Table G, Table H, Table I
     * OpenMP: STRONG_SCALING.md, Table J, Table K, Table L
 * Intel, ICX:
-    * STD::VEC
-    * OpenMP
+    * STD::VEC: ICX_SCALING_NOTES.md, Table K, L, M
+    * OpenMP:ICX_SCALING_NOTES.md, Table N, O, P
 
 
 ## Audit of Data from Tables
@@ -42,7 +42,7 @@ Status: All relevenat data is used.
 
 ### ICX_SCALING_NOTES.md
 
-Used: Tables A, B, C, D, E, F, G, H, I, J
+Used: Tables A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P
 Status: All relevant data is used.
 
 ### STRONG_SCALING.md
@@ -50,6 +50,22 @@ Status: All relevant data is used.
 Used: Table A, B, C, D, E, F, G, H, I, J, K, L
 Status: All relevant data is used.
 
+## Proposed Tables
 
+Weak Scaling: one table
+
+## Proposed Graphics
+
+Weak Scaling graph: 4 lines for Intel
+- STD::EXEC using GCC
+- STD::EXEC using ICX
+- OpenMP using GCC
+- OpenMP using ICX
+
+Weak Scaling graph: 4 lines for AMD
+- STD::EXEC using GCC
+- STD::EXEC using ICX
+- OpenMP using GCC
+- OpenMP using ICX
 
 
